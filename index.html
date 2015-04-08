@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    body,html{
+        margin:0;
+        padding:0;
+        height:80%;
+        width:100%;
+    }
+    body{
+        background-color: #424243;
+    }
+    tr,td,th{
+        border: 1px solid black;
+    }
+    table{
+        margin-top:200px;
+        margin-left:200px;
+        empty-cells: hide;
+    }
+    table tr th{
+        width:75px;
+        height:75px;
+        background-color:#f4f4f4;
+    }
+    table tr th:nth-child(2){
+        width:320px;
+        background-color:#f4f4f4;
+    }
+    table tr:first-child th{
+        background-color:#00be9f;
+        color:white;
+    }
+    table tr th:first-child{
+        background-color:#ff4d36;
+        color:white;
+    } 
+</style>
+</head>
+<body>
+    <table>
+    </table>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+        var players = 7;                //number of players
+        var playernumb = 1;             // player order
+        var gamenumb = 0;               //number of games
+        var column;                     //for column save
+        var row;                        //for row save
+        var bool;                       //boolean
+        function Create_Table(){
+            var $gamerow = '<tr><th></th><th></th>';
+            for(var i=0;i<players-1;i++){       //creating gamerow;
+                gamenumb++;
+                $gamerow += '<th>' + gamenumb + '</th>' ;
+            }
+            $gamerow+= '<th>Pts.</th></tr>' ;     //gamerow ready;
+            $("table").append($gamerow);         //gamerow added;
+            
+            for(i=0;i<players;i++){     //creating playerrows;
+                var $playerrow = '<tr><th>'+ playernumb + '</th><th>Karlen Kishmiryan</th>';
+                playernumb++;
+                for(var k=0;k<players-1;k++){
+                    $playerrow += '<th class="score">0</th>';
+                }
+                $playerrow += '<th>16</th></tr>';   //playerrow ready;
+                $("table").append($playerrow);     // playerrow added;
+                
+            }
+        }
+        Create_Table();
+        $(".score").click(
+            function Select(){
+                if(bool){
+                    for(i=1;i<players+2;i++){
+                        $('table tr:eq(' + row + ') th:eq(' + i + ')').css("background-color","#f4f4f4");
+                        $('table tr:eq(' + i + ') th:eq(' + column + ')').css("background-color","#f4f4f4");
+                    }                 
+                }
+                var row_index = $(this).parent().index();
+                var col_index = $(this).index();
+                for(i=1;i<players+2;i++){
+                    $('table tr:eq(' + row_index + ') th:eq(' + i + ')').css("background-color","#C0C0C0 ");
+                    $('table tr:eq(' + i + ') th:eq(' + col_index + ')').css("background-color","#C0C0C0 ");
+                }
+                row = row_index;
+                column = col_index;
+                bool = true;
+            }
+        );
+    </script>
+</body>
+</html>
