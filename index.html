@@ -5,53 +5,155 @@
     body,html{
         margin:0;
         padding:0;
-        height:80%;
         width:100%;
     }
-    body{
-        background-color: #424243;
+    #background{
+        height:100%;
+        width:100%;
     }
-    tr,td,th{
-        border: 1px solid black;
+    #left, #right{
+        height:2720px;
+        width:49.8%;
+        display:inline-block;
+        float:left;
+        position:relative;
     }
+    #left{
+        background-color:#424243;
+    }
+    #right{
+        background-color:#484849;
+    }
+    #left div:first-child{
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 0 49.8vw 250px 0;
+        border-color: transparent #3d3d3b transparent transparent;
+        display:inline-block;
+        
+    }
+    #left div:nth-child(2){
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 0 0 250px 49.8vw;
+        border-color: transparent transparent #3d3d3b transparent;
+        display:inline-block;
+        position:absolute;
+        bottom:0;
+    }
+    #right div:first-child{
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 250px 49.5vw 0 0;
+        border-color: #434341 transparent transparent transparent;
+        display:inline-block;
+
+    }
+    #right div:nth-child(2){
+        width: 0px;
+        height: 0px;
+        border-style: solid;
+        border-width: 250px 0 0 49vw;
+        border-color: transparent transparent transparent #434341;
+        position:absolute;
+        bottom:0;
+    }
+    .score{
+        background-color:#FFFFFF;
+    }
+    .empty{
+        background-color:#f4f4f4;
+    }
+    #cup {
+        position:absolute;
+        z-index:1;
+        left:44%;
+        top:5%;
+    }
+    #text{
+        position:absolute;
+        left:30%;
+        top:40%;
+        z-index:1;
+    }
+    #text h1{
+        display:inline;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size:50px;
+    }
+    #text h1:first-child{
+        color:#FFCB3A;
+    }
+    #text h1:nth-child(2){
+        color:#FFFFFF;
+    }    
     table{
-        margin-top:200px;
-        margin-left:200px;
-        empty-cells: hide;
+        left:8%;
+        top:60%;
+        position:absolute;
+        z-index:1;
     }
     table tr th{
-        width:75px;
-        height:75px;
+        width:71px;
+        height:66px;
         background-color:#f4f4f4;
+        color:#393935;
     }
     table tr th:nth-child(2){
         width:320px;
+        height:66px;
+        color:#393935;
+        padding-right:130px;
+        box-sizing:border-box;
         background-color:#f4f4f4;
+    }
+    table tr:first-child th:nth-child(1), table tr:first-child th:nth-child(2){
+        visibility:hidden;
     }
     table tr:first-child th{
         background-color:#00be9f;
-        color:white;
+        color:#FFFFFF;
     }
     table tr th:first-child{
         background-color:#ff4d36;
-        color:white;
-    } 
+        color:#FFFFFF;
+    }
 </style>
 </head>
 <body>
-    <table>
-    </table>
+    <div id="background">
+        <div id="left">
+            <div></div>
+            <div></div>
+        </div>
+        <div id="cup"><img src="kubok.png"></div>
+        <div id="text">
+            <h1>CHESS</h1>
+            <h1>LEADERBOARD</h1>
+        </div>
+        <table>
+        </table>
+        <div id="right">
+            <div></div>
+            <div></div>
+
+        </div>
+    </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>
-        var players = 7;                //number of players
+        var players = 8;                //number of players
         var playernumb = 1;             // player order
         var gamenumb = 0;               //number of games
         var column;                     //for column save
         var row;                        //for row save
         var bool;                       //boolean
+        var scoring=0;
         function Create_Table(){
             var $gamerow = '<tr><th></th><th></th>';
-            for(var i=0;i<players-1;i++){       //creating gamerow;
+            for(var i=0;i<players;i++){       //creating gamerow;
                 gamenumb++;
                 $gamerow += '<th>' + gamenumb + '</th>' ;
             }
@@ -61,26 +163,30 @@
             for(i=0;i<players;i++){     //creating playerrows;
                 var $playerrow = '<tr><th>'+ playernumb + '</th><th>Karlen Kishmiryan</th>';
                 playernumb++;
-                for(var k=0;k<players-1;k++){
-                    $playerrow += '<th class="score">0</th>';
+                for(var k=0;k<players;k++){
+                    if(k==scoring)
+                        $playerrow += '<th class="score empty"></th>';
+                    else
+                        $playerrow += '<th class="score">0</th>';
                 }
+                scoring++;
                 $playerrow += '<th>16</th></tr>';   //playerrow ready;
                 $("table").append($playerrow);     // playerrow added;
                 
             }
         }
         Create_Table();
-        $(".score").click(
+        $(".score").hover(
             function Select(){
                 if(bool){
-                    for(i=1;i<players+2;i++){
+                    for(i=1;i<players+3;i++){
                         $('table tr:eq(' + row + ') th:eq(' + i + ')').css("background-color","#f4f4f4");
                         $('table tr:eq(' + i + ') th:eq(' + column + ')').css("background-color","#f4f4f4");
                     }                 
                 }
                 var row_index = $(this).parent().index();
                 var col_index = $(this).index();
-                for(i=1;i<players+2;i++){
+                for(i=1;i<players+3;i++){
                     $('table tr:eq(' + row_index + ') th:eq(' + i + ')').css("background-color","#C0C0C0 ");
                     $('table tr:eq(' + i + ') th:eq(' + col_index + ')').css("background-color","#C0C0C0 ");
                 }
